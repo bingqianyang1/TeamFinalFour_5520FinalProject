@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "505190837636",
+    "firebase_url": "https://finalprojectteamfinalfour-default-rtdb.firebaseio.com",
+    "project_id": "finalprojectteamfinalfour",
+    "storage_bucket": "finalprojectteamfinalfour.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:505190837636:android:69bc6b8f3f38ce787801d1",
+        "android_client_info": {
+          "package_name": "edu.neu.madcourse.finalproject"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "505190837636-ld3ssgni4k12q50rt0km6th3co9c9mko.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBr3_j_botrF5OzQxyVn7i9v_rAdtzTmWs"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "505190837636-ld3ssgni4k12q50rt0km6th3co9c9mko.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
