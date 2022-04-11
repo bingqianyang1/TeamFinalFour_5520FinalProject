@@ -8,7 +8,6 @@ public class User {
     public String username;
     public String password;
     public Map<String,String> followers;
-
     public Map<String, Object> posts;
 
     public User(){};
@@ -28,5 +27,37 @@ public class User {
         this.username = username;
     }
 
+    public String getPassword() {
+        return password;
+    }
 
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public Map<String, String> getFollowers() {
+        return followers;
+    }
+
+    public void setFollowers(Map<String, String> followers) {
+        this.followers = followers;
+    }
+
+    public Map<String, Object> getPosts() {
+        return posts;
+    }
+
+    public void setPosts(Map<String, Object> posts) {
+        this.posts = posts;
+    }
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "username='" + username + '\'' +
+                ", password='" + password + '\'' +
+                ", followers=" + followers +
+                ", posts=" + posts +
+                '}';
+    }
 }
