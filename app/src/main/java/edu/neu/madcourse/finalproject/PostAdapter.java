@@ -10,15 +10,18 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
+import java.util.Map;
 
 public class PostAdapter extends RecyclerView.Adapter<PostAdapter.MyViewHolder> {
 
     Context context;
-    ArrayList<User> userList;
+    ArrayList<Post> posts;
+    ArrayList<User> users;
 
-    public PostAdapter(Context context, ArrayList<User> userList) {
+    public PostAdapter(Context context, ArrayList<User> users, ArrayList<Post> posts) {
         this.context = context;
-        this.userList = userList;
+        this.users = users;
+        this.posts = posts;
     }
 
     @NonNull
@@ -30,16 +33,16 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.MyViewHolder> 
 
     @Override
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
-        User user = userList.get(position);
-        holder.firstName.setText(user.getUsername());
-        holder.lastName.setText(user.getPassword());
-        holder.age.setText(user.getUsername());
+        Post post = posts.get(position);
+        holder.firstName.setText(post.getTitle());
+        holder.lastName.setText(post.getLocation());
+        holder.age.setText(post.getContent());
 
     }
 
     @Override
     public int getItemCount() {
-        return userList.size();
+        return posts.size();
     }
 
     public static class MyViewHolder extends RecyclerView.ViewHolder {
@@ -47,9 +50,9 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.MyViewHolder> 
         TextView firstName, lastName, age;
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);
-            firstName = itemView.findViewById(R.id.tvFirstName);
-            lastName = itemView.findViewById(R.id.tvLastName);
-            age = itemView.findViewById(R.id.tvAge);
+            firstName = itemView.findViewById(R.id.title);
+            lastName = itemView.findViewById(R.id.likes);
+            age = itemView.findViewById(R.id.content);
         }
     }
 }

@@ -7,7 +7,7 @@ public class User {
 
     public String username;
     public String password;
-    public Map<String,String> followers;
+    public Map<String, String> followers;
     public Map<String, Object> posts;
 
     public User(){};
