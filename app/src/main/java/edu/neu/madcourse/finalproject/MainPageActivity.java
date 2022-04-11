@@ -6,7 +6,10 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.ImageView;
 
 import com.google.android.gms.common.util.ScopeUtil;
 import com.google.firebase.database.ChildEventListener;
@@ -24,6 +27,7 @@ public class MainPageActivity extends AppCompatActivity {
 
 
     private RecyclerView recyclerView;
+    private ImageView addButton;
     private DatabaseReference database;
     private PostAdapter postAdapter;
     private ArrayList<User> userList;
@@ -39,6 +43,7 @@ public class MainPageActivity extends AppCompatActivity {
         database = FirebaseDatabase.getInstance().getReference("Users");
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        addButton = findViewById(R.id.add);
 
         postList = new ArrayList<>();
         userList = new ArrayList<>();
@@ -64,6 +69,10 @@ public class MainPageActivity extends AppCompatActivity {
                         String time = map.get("time");
                         String likes = map.get("likes");
                         postList.add(new Post(image, title, content, location, time, likes));
+                        postList.add(new Post(image, title, content, location, time, likes));
+                        postList.add(new Post(image, title, content, location, time, likes));
+                        postList.add(new Post(image, title, content, location, time, likes));
+                        postList.add(new Post(image, title, content, location, time, likes));
                     }
                 }
                 postAdapter.notifyDataSetChanged();
@@ -72,6 +81,14 @@ public class MainPageActivity extends AppCompatActivity {
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
 
+            }
+        });
+
+        addButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(MainPageActivity.this, AddPostActivity.class);
+                startActivity(intent);
             }
         });
 
