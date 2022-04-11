@@ -75,7 +75,7 @@
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/postList"
             android:layout_width="match_parent"
-            android:layout_height="500sp"
+            android:layout_height="530sp"
             android:layout_marginStart="16dp"
             android:layout_marginTop="8dp"
             android:layout_marginEnd="16dp"

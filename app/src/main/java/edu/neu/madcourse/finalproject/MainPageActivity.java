@@ -24,8 +24,6 @@ import java.util.List;
 import java.util.Map;
 
 public class MainPageActivity extends AppCompatActivity {
-
-
     private RecyclerView recyclerView;
     private ImageView addButton;
     private DatabaseReference database;
@@ -38,7 +36,6 @@ public class MainPageActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_page);
 
-
         recyclerView = findViewById(R.id.postList);
         database = FirebaseDatabase.getInstance().getReference("Users");
         recyclerView.setHasFixedSize(true);
@@ -49,9 +46,6 @@ public class MainPageActivity extends AppCompatActivity {
         userList = new ArrayList<>();
         postAdapter = new PostAdapter(this, postList);
         recyclerView.setAdapter(postAdapter);
-
-
-
         database.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -59,25 +53,9 @@ public class MainPageActivity extends AppCompatActivity {
                     User user = dataSnapshot.getValue(User.class);
                     userList.add(user);
                 }
-                for(User user: userList) {
-                    for(Map.Entry<String, Object> entry: user.getPosts().entrySet()) {
-                        Map<String, String> map = (Map<String, String>)entry.getValue();
-                        String image = map.get("image");
-                        String title = map.get("title");
-                        String content = map.get("content");
-                        String location = map.get("location");
-                        String time = map.get("time");
-                        String likes = map.get("likes");
-                        postList.add(new Post(image, title, content, location, time, likes));
-                        postList.add(new Post(image, title, content, location, time, likes));
-                        postList.add(new Post(image, title, content, location, time, likes));
-                        postList.add(new Post(image, title, content, location, time, likes));
-                        postList.add(new Post(image, title, content, location, time, likes));
-                    }
-                }
+                getPosts(userList, postList);
                 postAdapter.notifyDataSetChanged();
             }
-
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
 
@@ -95,20 +73,25 @@ public class MainPageActivity extends AppCompatActivity {
     }
 
 
-//    /**
-//     * Get all the posts from the users
-//     * @param postList
-//     * @param userList
-//     */
-//    private void getPostsFromUsers(ArrayList<Post> postList, ArrayList<User> userList) {
-//        for(User user: userList) {
-//            Map<String, Post> postMap = user.getPosts();
-//            for(Map.Entry<String, Post> entry: postMap.entrySet()) {
-//                Post post = entry.getValue();
-//                postList.add(post);
-//            }
-//        }
-//    }
+    /**
+     * Get all the posts from the user and update the post list
+     * @param userList
+     * @param postList
+     */
+    private void getPosts(ArrayList<User> userList, ArrayList<Post> postList) {
+        for(User user: userList) {
+            for(Map.Entry<String, Object> entry: user.getPosts().entrySet()) {
+                Map<String, String> map = (Map<String, String>)entry.getValue();
+                String image = map.get("image");
+                String title = map.get("title");
+                String content = map.get("content");
+                String location = map.get("location");
+                String time = map.get("time");
+                String likes = map.get("likes");
+                postList.add(new Post(image, title, content, location, time, likes));
+            }
+        }
+    }
 
 
 }
