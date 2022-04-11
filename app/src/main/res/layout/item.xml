@@ -8,6 +8,7 @@
     android:layout_margin="16dp">
 
     <LinearLayout
+        android:background="@drawable/border"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="horizontal"
@@ -20,6 +21,8 @@
             android:layout_width="60sp"
             android:layout_height="60sp"
             android:src="@drawable/test"
+            android:scaleX=".8"
+            android:scaleY=".8"
             android:layout_marginRight="20sp"
             />
 
