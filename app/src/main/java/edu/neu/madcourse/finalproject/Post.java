@@ -6,9 +6,9 @@ public class Post {
     private String content;
     private String location;
     private String time;
-    private int likes;
+    private String likes;
 
-    public Post(String image, String title, String content, String location, String time, int likes) {
+    public Post(String image, String title, String content, String location, String time, String likes) {
         this.image = image;
         this.title = title;
         this.content = content;
@@ -57,14 +57,13 @@ public class Post {
         this.time = time;
     }
 
-    public int getLikes() {
+    public String getLikes() {
         return likes;
     }
 
-    public void setLikes(int likes) {
+    public void setLikes(String likes) {
         this.likes = likes;
     }
-
 
     @Override
     public String toString() {

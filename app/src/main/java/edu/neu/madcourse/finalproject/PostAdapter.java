@@ -16,11 +16,9 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.MyViewHolder> 
 
     Context context;
     ArrayList<Post> posts;
-    ArrayList<User> users;
 
-    public PostAdapter(Context context, ArrayList<User> users, ArrayList<Post> posts) {
+    public PostAdapter(Context context, ArrayList<Post> posts) {
         this.context = context;
-        this.users = users;
         this.posts = posts;
     }
 
@@ -34,9 +32,9 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.MyViewHolder> 
     @Override
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
         Post post = posts.get(position);
-        holder.firstName.setText(post.getTitle());
-        holder.lastName.setText(post.getLocation());
-        holder.age.setText(post.getContent());
+        holder.title.setText(post.getTitle());
+        holder.likes.setText(post.getLikes());
+        holder.content.setText(post.getContent());
 
     }
 
@@ -47,12 +45,12 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.MyViewHolder> 
 
     public static class MyViewHolder extends RecyclerView.ViewHolder {
 
-        TextView firstName, lastName, age;
+        TextView title, likes, content;
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);
-            firstName = itemView.findViewById(R.id.title);
-            lastName = itemView.findViewById(R.id.likes);
-            age = itemView.findViewById(R.id.content);
+            title = itemView.findViewById(R.id.title);
+            likes = itemView.findViewById(R.id.likes);
+            content = itemView.findViewById(R.id.content);
         }
     }
 }

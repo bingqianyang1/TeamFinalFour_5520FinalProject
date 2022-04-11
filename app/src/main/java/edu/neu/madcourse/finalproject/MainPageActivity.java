@@ -42,7 +42,7 @@ public class MainPageActivity extends AppCompatActivity {
 
         postList = new ArrayList<>();
         userList = new ArrayList<>();
-        postAdapter = new PostAdapter(this, userList, postList);
+        postAdapter = new PostAdapter(this, postList);
         recyclerView.setAdapter(postAdapter);
 
 
@@ -51,9 +51,7 @@ public class MainPageActivity extends AppCompatActivity {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 for(DataSnapshot dataSnapshot: snapshot.getChildren()) {
-                    System.out.println(database);
                     User user = dataSnapshot.getValue(User.class);
-                    System.out.println(user);
                     userList.add(user);
                 }
                 for(User user: userList) {
@@ -64,7 +62,7 @@ public class MainPageActivity extends AppCompatActivity {
                         String content = map.get("content");
                         String location = map.get("location");
                         String time = map.get("time");
-                        int likes = Integer.valueOf(map.get("likes"));
+                        String likes = map.get("likes");
                         postList.add(new Post(image, title, content, location, time, likes));
                     }
                 }
