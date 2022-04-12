@@ -50,7 +50,9 @@ public class RegisterActivity extends AppCompatActivity {
                 reference.child(user).setValue(newUser);
 
                 Toast.makeText(RegisterActivity.this, "Register Successfully,  " + user, Toast.LENGTH_SHORT).show();
-                startActivity(new Intent(RegisterActivity.this, MainActivity.class));
+                Intent toMainPage = new Intent(RegisterActivity.this, MainPageActivity.class);
+                toMainPage.putExtra("username", user);
+                startActivity(toMainPage);
 
             }
         });

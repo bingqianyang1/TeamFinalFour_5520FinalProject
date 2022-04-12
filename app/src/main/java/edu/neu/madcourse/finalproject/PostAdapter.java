@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
@@ -29,6 +30,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.MyViewHolder> 
         this.postsAll = postListAll;
     }
 
+
     @NonNull
     @Override
     public MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -42,7 +44,6 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.MyViewHolder> 
         holder.title.setText(post.getTitle());
         holder.likes.setText(post.getLikes());
         holder.content.setText(post.getContent());
-
     }
 
     @Override
@@ -79,7 +80,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.MyViewHolder> 
                 String pattern = charSequence.toString().toLowerCase(Locale.ROOT).trim();
                 // Search for title
                 for(Post post: postsAll) {
-                    if(post.getTitle().toLowerCase().contains(pattern)) {
+                    if(post.getTitle().toLowerCase().contains(pattern) || post.getLocation().toLowerCase().contains(pattern)) {
                         filteredList.add(post);
                     }
                 }
