@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".RegisterActivity"
+    android:layout_margin="10dp">
+
+
+
+    <TextView
+        android:id="@+id/registerPage"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/register_page"
+        android:textSize="20sp"
+        android:layout_marginBottom="20dp" />
+
+    <EditText
+        android:id="@+id/registerUsername"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/registerPage"
+        android:layout_marginBottom="20dp"
+        android:hint="@string/username"
+        android:minHeight="48dp" />
+
+    <EditText
+        android:id="@+id/registerPassword"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/registerUsername"
+        android:layout_marginBottom="20dp"
+        android:hint="@string/password"
+        android:minHeight="48dp" />
+
+    <Button
+        android:id="@+id/registerButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/registerPassword"
+        android:text="@string/register"
+        android:layout_marginBottom="20dp" />
+
+    <TextView
+        android:id="@+id/textLogin"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/registerButton"
+        android:text="@string/existing_user_login"
+        android:layout_marginBottom="20dp"
+        android:textAlignment="center" />
+
+</RelativeLayout>
