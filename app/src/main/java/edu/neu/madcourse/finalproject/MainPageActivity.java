@@ -1,18 +1,19 @@
 package edu.neu.madcourse.finalproject;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.SearchView;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.ClipData;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 
-import com.google.android.gms.common.util.ScopeUtil;
-import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -20,7 +21,6 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Map;
 
 public class MainPageActivity extends AppCompatActivity {
@@ -30,6 +30,7 @@ public class MainPageActivity extends AppCompatActivity {
     private PostAdapter postAdapter;
     private ArrayList<User> userList;
     private ArrayList<Post> postList;
+    private ArrayList<Post> newPostList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,7 +45,8 @@ public class MainPageActivity extends AppCompatActivity {
 
         postList = new ArrayList<>();
         userList = new ArrayList<>();
-        postAdapter = new PostAdapter(this, postList);
+        newPostList = new ArrayList<>();
+        postAdapter = new PostAdapter(this, postList, newPostList);
         recyclerView.setAdapter(postAdapter);
         database.addValueEventListener(new ValueEventListener() {
             @Override
@@ -53,7 +55,7 @@ public class MainPageActivity extends AppCompatActivity {
                     User user = dataSnapshot.getValue(User.class);
                     userList.add(user);
                 }
-                getPosts(userList, postList);
+                getPosts(userList, postList, newPostList);
                 postAdapter.notifyDataSetChanged();
             }
             @Override
@@ -69,7 +71,6 @@ public class MainPageActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
-
     }
 
 
@@ -78,7 +79,7 @@ public class MainPageActivity extends AppCompatActivity {
      * @param userList
      * @param postList
      */
-    private void getPosts(ArrayList<User> userList, ArrayList<Post> postList) {
+    private void getPosts(ArrayList<User> userList, ArrayList<Post> postList, ArrayList<Post> newPostList) {
         for(User user: userList) {
             for(Map.Entry<String, Object> entry: user.getPosts().entrySet()) {
                 Map<String, String> map = (Map<String, String>)entry.getValue();
@@ -89,9 +90,39 @@ public class MainPageActivity extends AppCompatActivity {
                 String time = map.get("time");
                 String likes = map.get("likes");
                 postList.add(new Post(image, title, content, location, time, likes));
+                newPostList.add(new Post(image, title, content, location, time, likes));
+
             }
         }
     }
 
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.main_menu, menu);
+        MenuItem item = menu.findItem(R.id.search);
+        SearchView searchView = (SearchView) item.getActionView();
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                postAdapter.getFilter().filter(query);
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                return false;
+            }
+        });
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        if(item.getItemId() == R.id.profile) {
+            Intent intent = new Intent(MainPageActivity.this, AddPostActivity.class);
+            startActivity(intent);
+        }
+        return super.onOptionsItemSelected(item);
+    }
 }

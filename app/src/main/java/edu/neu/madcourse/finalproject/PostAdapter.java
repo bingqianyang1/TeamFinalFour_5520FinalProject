@@ -4,22 +4,29 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Filter;
+import android.widget.Filterable;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
-public class PostAdapter extends RecyclerView.Adapter<PostAdapter.MyViewHolder> {
+public class PostAdapter extends RecyclerView.Adapter<PostAdapter.MyViewHolder>  implements Filterable {
 
-    Context context;
-    ArrayList<Post> posts;
+    private Context context;
+    private ArrayList<Post> posts;
+    private ArrayList<Post> postsAll;
 
-    public PostAdapter(Context context, ArrayList<Post> posts) {
+    public PostAdapter(Context context, ArrayList<Post> postList, ArrayList<Post> postListAll) {
         this.context = context;
-        this.posts = posts;
+        this.posts = postList;
+        this.postsAll = postListAll;
     }
 
     @NonNull
@@ -43,8 +50,8 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.MyViewHolder> 
         return posts.size();
     }
 
-    public static class MyViewHolder extends RecyclerView.ViewHolder {
 
+    public static class MyViewHolder extends RecyclerView.ViewHolder {
         TextView title, likes, content;
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -53,4 +60,41 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.MyViewHolder> 
             content = itemView.findViewById(R.id.content);
         }
     }
+
+
+
+    @Override
+    public Filter getFilter() {
+        return filter;
+    }
+
+    Filter filter = new Filter() {
+        // background thread
+        @Override
+        protected FilterResults performFiltering(CharSequence charSequence) {
+            List<Post> filteredList = new ArrayList<>();
+            if(charSequence.toString().isEmpty()) {
+                filteredList.addAll(postsAll);
+            } else {
+                String pattern = charSequence.toString().toLowerCase(Locale.ROOT).trim();
+                // Search for title
+                for(Post post: postsAll) {
+                    if(post.getTitle().toLowerCase().contains(pattern)) {
+                        filteredList.add(post);
+                    }
+                }
+            }
+            FilterResults filterResults = new FilterResults();
+            filterResults.values = filteredList;
+            return filterResults;
+        }
+
+        // UI thread
+        @Override
+        protected void publishResults(CharSequence charSequence, FilterResults filterResults) {
+            posts.clear();
+            posts.addAll((Collection<? extends Post>) filterResults.values);
+            notifyDataSetChanged();
+        }
+    };
 }
