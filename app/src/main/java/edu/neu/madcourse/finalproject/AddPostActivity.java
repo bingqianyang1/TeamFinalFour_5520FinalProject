@@ -1,21 +1,21 @@
 package edu.neu.madcourse.finalproject;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
 import android.Manifest;
-import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Address;
 import android.location.Geocoder;
-import android.media.Image;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Looper;
+import android.os.StrictMode;
 import android.provider.MediaStore;
 import android.view.View;
 import android.widget.Button;
@@ -30,16 +30,27 @@ import com.google.android.gms.location.LocationResult;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.MutableData;
+import com.google.firebase.database.Transaction;
+import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.OnProgressListener;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
 import java.io.IOException;
-import java.net.URL;
+import java.net.InetSocketAddress;
+import java.net.Socket;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 import java.util.UUID;
 
 public class AddPostActivity extends AppCompatActivity {
@@ -54,13 +65,19 @@ public class AddPostActivity extends AppCompatActivity {
     private String upload_image_name;
     private String city;
     private CheckBox add_location_cb;
+    private String date_String;
+    private FirebaseDatabase database;
+    private String user_name;
+    private TextView title_tx;
+    private TextView content_tx;
+    private Uri upload_image_uri;
 
-    private TextView test;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_post);
+        user_name = getIntent().getStringExtra("username");
         Button select_image_button = findViewById(R.id.choose_image_button);
         select_image_button.setOnClickListener(new View.OnClickListener(){
             @Override
@@ -70,10 +87,13 @@ public class AddPostActivity extends AppCompatActivity {
             }
         });
 
-        test = findViewById(R.id.test);
+//        test = findViewById(R.id.test);
+        title_tx = findViewById(R.id.title_textview);
+        content_tx = findViewById(R.id.content_textview);
         storage = FirebaseStorage.getInstance();
         storageReference = storage.getReference();
         add_location_cb = findViewById(R.id.add_location_cb);
+        database = FirebaseDatabase.getInstance();
 
         post_button = findViewById(R.id.post_button);
         post_button.setOnClickListener(new View.OnClickListener() {
@@ -107,8 +127,8 @@ public class AddPostActivity extends AppCompatActivity {
                                         @Override
                                         public void onSuccess(Uri uri) {
                                             // Got the download URL for 'users/me/profile.png'
-                                            Uri u = uri;
-//                                            test.setText(u.toString());
+                                            upload_image_uri = uri;
+                                            update_database();
                                         }
                                     }).addOnFailureListener(new OnFailureListener() {
                                         @Override
@@ -133,13 +153,34 @@ public class AddPostActivity extends AppCompatActivity {
                                     progressDialog.setMessage("Uploaded "+(int)progress+"%");
                                 }
                             });
+
+
+                    }
                 }
-            }
+
         });
 
 
     }
 
+    private void update_database(){
+        int SDK_INT = android.os.Build.VERSION.SDK_INT;
+        if (SDK_INT > 8) {
+            StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+            StrictMode.setThreadPolicy(policy);
+            if (isNetworkOnline()) {
+                SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd 'at' HH:mm:ss z");
+                Date date = new Date(System.currentTimeMillis());
+                date_String = formatter.format(date).toString();
+
+                uploadPost(database.getReference());
+
+
+            }
+        } else {
+            Toast.makeText(getApplicationContext(), "Connection Error", Toast.LENGTH_LONG).show();
+        }
+    }
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 
@@ -212,10 +253,73 @@ public class AddPostActivity extends AppCompatActivity {
                     double latitude = locationResult.getLocations().get(latestLocationIndex).getLatitude();
                     double longtitude = locationResult.getLocations().get(latestLocationIndex).getLongitude();
                     city = getLocationName(latitude, longtitude);
-                    test.setText(city);
                 }
             }
         }, Looper.getMainLooper());
 
     }
+
+    public static boolean isNetworkOnline() {
+        boolean isOnline = false;
+        try {
+            Socket socket = new Socket();
+            socket.connect(new InetSocketAddress("8.8.8.8", 53), 3000);
+            // socket.connect(new InetSocketAddress("114.114.114.114", 53), 3000);
+            isOnline = true;
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return isOnline;
+    }
+
+    private void uploadPost(DatabaseReference database) {
+
+        database.child("Users").child(user_name).child("posts").addListenerForSingleValueEvent(new ValueEventListener() {
+
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                if (!snapshot.exists()) {
+                    Map<String, Object> aPost = new HashMap<>();
+                    aPost.put("title", title_tx.getText().toString());
+                    aPost.put("content", content_tx.getText().toString());
+                    aPost.put("time", date_String);
+                    aPost.put("location", city);
+                    aPost.put("image", upload_image_uri.toString());
+                    aPost.put("likes", "0");
+
+
+                    Map<String, Object> posts = new HashMap<>();
+                    posts.put(title_tx.getText().toString(), aPost);
+
+                    Map<String, Object> updated = new HashMap<>();
+                    updated.put("posts", posts);
+                    database.child("Users").child(user_name).updateChildren(updated);
+                }else {
+
+//                user.sent_history.put("History" + user.sent_history.size(),receiver_name + ": " + selected_Sticker_String);
+
+                    Map<String, Object> aPost = new HashMap<>();
+                    aPost.put("title", title_tx.getText());
+                    aPost.put("content", content_tx.getText());
+                    aPost.put("time", date_String);
+                    aPost.put("location", city);
+                    aPost.put("image", upload_image_uri.toString());
+                    aPost.put("likes", "0");
+
+                    Map<String, Object> updated = new HashMap<>();
+                    updated.put(title_tx.getText().toString(), aPost);
+                    database.child("Users").child(user_name).child("posts").updateChildren(updated);
+                }
+//                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+    }
+
+
 }
