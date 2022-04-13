@@ -85,7 +85,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.MyViewHolder> 
                 String pattern = charSequence.toString().toLowerCase(Locale.ROOT).trim();
                 // Search for title
                 for(Post post: postsAll) {
-                    if(post.getTitle().toLowerCase().contains(pattern) || post.getLocation().toLowerCase().contains(pattern)) {
+                    if(post.getTitle().toLowerCase().contains(pattern) || (post.getLocation() != null && post.getLocation().toLowerCase().contains(pattern))) {
                         filteredList.add(post);
                     }
                 }
