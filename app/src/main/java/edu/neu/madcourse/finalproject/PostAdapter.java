@@ -41,10 +41,15 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.MyViewHolder> 
     @Override
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
         Post post = posts.get(position);
-        holder.title.setText(post.getTitle());
+        holder.title.setText(post.getTitle().length() <= 20? post.getTitle(): post.getTitle().substring(0,20) + "...");
         holder.likes.setText(post.getLikes());
-        holder.content.setText(post.getContent());
+
+        // Handle Situation when multiple lines here.
+        String oneLineContent = trimToOneLine(post.getContent());
+        holder.content.setText(oneLineContent.length() <= 20? oneLineContent: oneLineContent.substring(0,20) + "...");
     }
+
+
 
     @Override
     public int getItemCount() {
@@ -98,4 +103,14 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.MyViewHolder> 
             notifyDataSetChanged();
         }
     };
+
+
+    /**
+     * Trim content to one line
+     * @param content - the content
+     * @return
+     */
+    private String trimToOneLine(String content) {
+        return content.replace("\n", " ");
+    }
 }
