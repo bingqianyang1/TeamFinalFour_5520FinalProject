@@ -2,6 +2,7 @@ package edu.neu.madcourse.finalproject;
 
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,6 +15,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
@@ -57,6 +59,8 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.MyViewHolder> 
         holder.title.setText(title.length() <= 20? title: title.substring(0,20) + "...");
         holder.likes.setText(likes);
 
+        Glide.with(context).load(post.getImage()).into(holder.image);
+
 
         // Click the Likes
         holder.heart.setOnClickListener(new View.OnClickListener() {
@@ -82,13 +86,14 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.MyViewHolder> 
 
     public class MyViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         TextView title, likes, content;
-        ImageView heart;
+        ImageView heart, image;
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);
             title = itemView.findViewById(R.id.title);
             likes = itemView.findViewById(R.id.likes);
             content = itemView.findViewById(R.id.content);
             heart = itemView.findViewById(R.id.heart);
+            image = itemView.findViewById(R.id.image);
             itemView.setOnClickListener(this);
         }
 
