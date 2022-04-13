@@ -19,6 +19,7 @@ import android.os.Looper;
 import android.provider.MediaStore;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -52,6 +53,7 @@ public class AddPostActivity extends AppCompatActivity {
     private Uri selected_image;
     private String upload_image_name;
     private String city;
+    private CheckBox add_location_cb;
 
     private TextView test;
 
@@ -71,6 +73,7 @@ public class AddPostActivity extends AppCompatActivity {
         test = findViewById(R.id.test);
         storage = FirebaseStorage.getInstance();
         storageReference = storage.getReference();
+        add_location_cb = findViewById(R.id.add_location_cb);
 
         post_button = findViewById(R.id.post_button);
         post_button.setOnClickListener(new View.OnClickListener() {
@@ -78,10 +81,12 @@ public class AddPostActivity extends AppCompatActivity {
             public void onClick(View V) {
                 if (image_selected){
 
-                    if (ContextCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-                        ActivityCompat.requestPermissions(AddPostActivity.this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, REQUEST_LOCATION);
-                    } else {
-                        getCurrentLocation();
+                    if (add_location_cb.isChecked()) {
+                        if (ContextCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                            ActivityCompat.requestPermissions(AddPostActivity.this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, REQUEST_LOCATION);
+                        } else {
+                            getCurrentLocation();
+                        }
                     }
 
                     final ProgressDialog progressDialog = new ProgressDialog(AddPostActivity.this);

@@ -87,6 +87,7 @@ public class MainPageActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(MainPageActivity.this, AddPostActivity.class);
+                intent.putExtra("username", username);
                 startActivity(intent);
             }
         });
