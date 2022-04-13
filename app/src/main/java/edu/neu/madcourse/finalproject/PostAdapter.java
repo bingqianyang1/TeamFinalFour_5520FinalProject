@@ -1,15 +1,21 @@
 package edu.neu.madcourse.finalproject;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Filter;
 import android.widget.Filterable;
+import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -23,11 +29,15 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.MyViewHolder> 
     private Context context;
     private ArrayList<Post> posts;
     private ArrayList<Post> postsAll;
+    private RecyclerViewClickListener listener;
+    private DatabaseReference database;
 
-    public PostAdapter(Context context, ArrayList<Post> postList, ArrayList<Post> postListAll) {
+    public PostAdapter(Context context, ArrayList<Post> postList, ArrayList<Post> postListAll, RecyclerViewClickListener listener) {
         this.context = context;
         this.posts = postList;
         this.postsAll = postListAll;
+        this.listener = listener;
+        database = FirebaseDatabase.getInstance().getReference("Users");
     }
 
 
@@ -41,8 +51,21 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.MyViewHolder> 
     @Override
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
         Post post = posts.get(position);
-        holder.title.setText(post.getTitle().length() <= 20? post.getTitle(): post.getTitle().substring(0,20) + "...");
-        holder.likes.setText(post.getLikes());
+        String username = post.getUsername();
+        String title = post.getTitle();
+        String likes = post.getLikes();
+        holder.title.setText(title.length() <= 20? title: title.substring(0,20) + "...");
+        holder.likes.setText(likes);
+
+
+        // Click the Likes
+        holder.heart.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                DatabaseReference likesThisPost = database.child(username).child("posts").child(title).child("likes");
+                likesThisPost.setValue(String.valueOf(Integer.valueOf(likes)+1));
+            }
+        });
 
         // Handle Situation when multiple lines here.
         String oneLineContent = trimToOneLine(post.getContent());
@@ -57,13 +80,21 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.MyViewHolder> 
     }
 
 
-    public static class MyViewHolder extends RecyclerView.ViewHolder {
+    public class MyViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         TextView title, likes, content;
+        ImageView heart;
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);
             title = itemView.findViewById(R.id.title);
             likes = itemView.findViewById(R.id.likes);
             content = itemView.findViewById(R.id.content);
+            heart = itemView.findViewById(R.id.heart);
+            itemView.setOnClickListener(this);
+        }
+
+        @Override
+        public void onClick(View view) {
+            listener.onClick(itemView, getAdapterPosition());
         }
     }
 
@@ -113,4 +144,10 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.MyViewHolder> 
     private String trimToOneLine(String content) {
         return content.replace("\n", " ");
     }
+
+
+    public interface RecyclerViewClickListener {
+        void onClick(View v, int position);
+    }
+
 }

@@ -7,14 +7,16 @@ public class Post {
     private String location;
     private String time;
     private String likes;
+    private String username;
 
-    public Post(String image, String title, String content, String location, String time, String likes) {
+    public Post(String image, String title, String content, String location, String time, String likes, String username) {
         this.image = image;
         this.title = title;
         this.content = content;
         this.location = location;
         this.time = time;
         this.likes = likes;
+        this.username = username;
     }
 
     public String getImage() {
@@ -65,6 +67,14 @@ public class Post {
         this.likes = likes;
     }
 
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
     @Override
     public String toString() {
         return "Post{" +
@@ -73,7 +83,8 @@ public class Post {
                 ", content='" + content + '\'' +
                 ", location='" + location + '\'' +
                 ", time='" + time + '\'' +
-                ", likes=" + likes +
+                ", likes='" + likes + '\'' +
+                ", username='" + username + '\'' +
                 '}';
     }
 }

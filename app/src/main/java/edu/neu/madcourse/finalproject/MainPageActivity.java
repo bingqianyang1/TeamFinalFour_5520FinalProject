@@ -9,11 +9,13 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.content.ClipData;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.Toast;
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -27,6 +29,7 @@ import java.util.Map;
 
 public class MainPageActivity extends AppCompatActivity {
     private RecyclerView recyclerView;
+    private PostAdapter.RecyclerViewClickListener listener;
     private ImageView addButton;
     private ImageView homeButton;
     private ImageView followButton;
@@ -60,8 +63,11 @@ public class MainPageActivity extends AppCompatActivity {
         postList = new ArrayList<>();
         userList = new ArrayList<>();
         newPostList = new ArrayList<>();
-        postAdapter = new PostAdapter(this, postList, newPostList);
+
+        setPostItemOnClickListener();
+        postAdapter = new PostAdapter(this, postList, newPostList, listener);
         recyclerView.setAdapter(postAdapter);
+
         database.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -79,7 +85,6 @@ public class MainPageActivity extends AppCompatActivity {
             }
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
-
             }
         });
 
@@ -115,6 +120,27 @@ public class MainPageActivity extends AppCompatActivity {
         });
     }
 
+    /**
+     * The click listener for each item in the recycler list
+     */
+    private void setPostItemOnClickListener() {
+        listener = new PostAdapter.RecyclerViewClickListener() {
+            @Override
+            public void onClick(View v, int position) {
+                Toast.makeText(MainPageActivity.this, "Title is:" + postList.get(position).getTitle(), Toast.LENGTH_SHORT).show();
+                Intent toPostDetailPage = new Intent(getApplicationContext(), AddPostActivity.class);
+                toPostDetailPage.putExtra("content", postList.get(position).getContent());
+                toPostDetailPage.putExtra("image", postList.get(position).getImage());
+                toPostDetailPage.putExtra("likes", postList.get(position).getLikes());
+                toPostDetailPage.putExtra("location", postList.get(position).getLocation());
+                toPostDetailPage.putExtra("time", postList.get(position).getTime());
+                toPostDetailPage.putExtra("title", postList.get(position).getTitle());
+                toPostDetailPage.putExtra("username", postList.get(position).getUsername());
+                startActivity(toPostDetailPage);
+            }
+        };
+    }
+
 
     /**
      * Get all the posts from the user and update the post list
@@ -123,6 +149,7 @@ public class MainPageActivity extends AppCompatActivity {
      */
     private void getPosts(ArrayList<User> userList, ArrayList<Post> postList, ArrayList<Post> newPostList) {
         for(User user: userList) {
+            String username = user.getUsername();
             for(Map.Entry<String, Object> entry: user.getPosts().entrySet()) {
                 Map<String, String> map = (Map<String, String>)entry.getValue();
                 String image = map.get("image");
@@ -131,8 +158,8 @@ public class MainPageActivity extends AppCompatActivity {
                 String location = map.get("location");
                 String time = map.get("time");
                 String likes = map.get("likes");
-                postList.add(new Post(image, title, content, location, time, likes));
-                newPostList.add(new Post(image, title, content, location, time, likes));
+                postList.add(new Post(image, title, content, location, time, likes, username));
+                newPostList.add(new Post(image, title, content, location, time, likes, username));
             }
         }
         postList.sort((post1, post2) -> Integer.valueOf(post2.getLikes()) - Integer.valueOf(post1.getLikes()));
