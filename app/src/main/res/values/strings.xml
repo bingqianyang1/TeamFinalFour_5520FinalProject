@@ -8,4 +8,9 @@
     <string name="register">Register</string>
     <string name="register_page">Register Page</string>
     <string name="existing_user_login">Existing User Login</string>
+    <string name="_1_1k">1.1k</string>
+    <string name="post_date">Post Date</string>
+    <string name="location">Location</string>
+    <string name="post_content">Post content</string>
+    <string name="title">Title</string>
 </resources>

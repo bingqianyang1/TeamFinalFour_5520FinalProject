@@ -128,7 +128,7 @@ public class MainPageActivity extends AppCompatActivity {
             @Override
             public void onClick(View v, int position) {
                 Toast.makeText(MainPageActivity.this, "Title is:" + postList.get(position).getTitle(), Toast.LENGTH_SHORT).show();
-                Intent toPostDetailPage = new Intent(getApplicationContext(), AddPostActivity.class);
+                Intent toPostDetailPage = new Intent(getApplicationContext(), ShowPostDetailActivity.class);
                 toPostDetailPage.putExtra("content", postList.get(position).getContent());
                 toPostDetailPage.putExtra("image", postList.get(position).getImage());
                 toPostDetailPage.putExtra("likes", postList.get(position).getLikes());
