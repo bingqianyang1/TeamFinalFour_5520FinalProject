@@ -70,7 +70,7 @@ public class LoginActivity extends AppCompatActivity {
 
 
 
-                reference.child(user).addValueEventListener(new ValueEventListener() {
+                reference.child(user).addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
                         email = snapshot.child("email").getValue().toString();
