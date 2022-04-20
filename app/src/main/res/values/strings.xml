@@ -13,4 +13,5 @@
     <string name="location">Location</string>
     <string name="post_content">Post content</string>
     <string name="title">Title</string>
+    <string name="email">Email</string>
 </resources>
