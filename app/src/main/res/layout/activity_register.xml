@@ -23,16 +23,25 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/registerPage"
         android:layout_marginBottom="20dp"
-        android:hint="@string/username"
+        android:hint="Username"
+        android:minHeight="48dp" />
+
+    <EditText
+        android:id="@+id/registerEmail"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/registerUsername"
+        android:layout_marginBottom="20dp"
+        android:hint="@string/email"
         android:minHeight="48dp" />
 
     <EditText
         android:id="@+id/registerPassword"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/registerUsername"
+        android:layout_below="@+id/registerEmail"
         android:layout_marginBottom="20dp"
-        android:hint="@string/password"
+        android:hint="Password"
         android:minHeight="48dp" />
 
     <Button
@@ -51,5 +60,15 @@
         android:text="@string/existing_user_login"
         android:layout_marginBottom="20dp"
         android:textAlignment="center" />
+
+    <ProgressBar
+        android:id="@+id/registerProgressBar"
+        style="?android:attr/progressBarStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/textLogin"
+        android:layout_centerInParent="true"
+        android:layout_gravity="center"
+        android:visibility="invisible" />
 
 </RelativeLayout>
