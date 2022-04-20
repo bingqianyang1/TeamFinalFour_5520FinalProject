@@ -53,52 +53,77 @@ public class RegisterActivity extends AppCompatActivity {
         registerButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
                 String user = registerUsername.getText().toString();
                 String email = registerEmail.getText().toString();
                 String pw = registerPassword.getText().toString();
 
-                if (user.isEmpty()) {
-                    registerUsername.setError("Username is required");
-                }
-                if (email.isEmpty()) {
-                    registerEmail.setError("Email is required");
-                }
-                if (pw.isEmpty()) {
-                    registerPassword.setError("Password is required");
-                }
-                progressBar.setVisibility(view.VISIBLE);
-
+                /*
                 //If the user already login
                 if (auth.getCurrentUser() != null) {
                     Intent toMainPage = new Intent(RegisterActivity.this, MainPageActivity.class);
                     toMainPage.putExtra("username", user);
                     startActivity(toMainPage);
                     finish();
+                }
+                 */
+
+
+                if (user.isEmpty()) {
+                    registerUsername.setError("Username is required");
+                }
+
+                else if (email.isEmpty()) {
+                    registerEmail.setError("Email is required");
+                }
+                else if (pw.isEmpty()) {
+                    registerPassword.setError("Password is required");
+                }
+
+                else {
+                    reference.child(user).addListenerForSingleValueEvent(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot snapshot) {
+                            if (snapshot.exists()) {
+                                Toast.makeText(RegisterActivity.this, "Duplicate username", Toast.LENGTH_SHORT).show();
+                            }
+                            else {
+                                progressBar.setVisibility(view.VISIBLE);
+
+                                //Register the user in the firebase
+                                auth.createUserWithEmailAndPassword(email, pw).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                                    @Override
+                                    public void onComplete(@NonNull Task<AuthResult> task) {
+                                        if (task.isSuccessful()) {
+                                            User newUser = new User(user, email, pw);
+                                            reference.child(user).setValue(newUser);
+                                            Toast.makeText(RegisterActivity.this, "Register Successfully,  " + user, Toast.LENGTH_SHORT).show();
+                                            Intent toMainPage = new Intent(RegisterActivity.this, MainPageActivity.class);
+                                            toMainPage.putExtra("username", user);
+                                            startActivity(toMainPage);
+                                            progressBar.setVisibility(View.INVISIBLE);
+                                        }
+                                        else {
+                                            progressBar.setVisibility(View.INVISIBLE);
+                                            Toast.makeText(RegisterActivity.this, task.getException().getMessage(), Toast.LENGTH_SHORT).show();
+
+                                        }
+
+                                    }
+                                });
+                            }
+
+                        }
+
+
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError error) {
+
+                        }
+                    });
 
                 }
 
-                //Register the user in the firebase
-
-                auth.createUserWithEmailAndPassword(email, pw).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
-                        if (task.isSuccessful()) {
-                            User newUser = new User(user, email, pw);
-                            reference.child(user).setValue(newUser);
-                            Toast.makeText(RegisterActivity.this, "Register Successfully,  " + user, Toast.LENGTH_SHORT).show();
-                            Intent toMainPage = new Intent(RegisterActivity.this, MainPageActivity.class);
-                            toMainPage.putExtra("username", user);
-                            startActivity(toMainPage);
-                            progressBar.setVisibility(View.GONE);
-                        }
-                        else {
-                            progressBar.setVisibility(View.GONE);
-                            Toast.makeText(RegisterActivity.this, "Register Failed" + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
-
-                        }
-
-                    }
-                });
 
             }
         });

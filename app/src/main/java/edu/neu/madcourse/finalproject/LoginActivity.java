@@ -61,45 +61,58 @@ public class LoginActivity extends AppCompatActivity {
                 if (user.isEmpty()) {
                     loginUsername.setError("Username is required");
                 }
-                if (pw.isEmpty()) {
+                else if (pw.isEmpty()) {
                     loginPassword.setError("Password is required");
                 }
 
-
-                progressBar.setVisibility(view.VISIBLE);
-
-
-
-                reference.child(user).addListenerForSingleValueEvent(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(@NonNull DataSnapshot snapshot) {
-                        email = snapshot.child("email").getValue().toString();
-
-                        //authenticate user
-                        auth.signInWithEmailAndPassword(email, pw).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-                            @Override
-                            public void onComplete(@NonNull Task<AuthResult> task) {
-                                if (task.isSuccessful()) {
-                                    Toast.makeText(LoginActivity.this, "Login Successfully", Toast.LENGTH_SHORT).show();
-                                    Intent toMainPage = new Intent(LoginActivity.this, MainPageActivity.class);
-                                    toMainPage.putExtra("username", user);
-                                    startActivity(toMainPage);
-                                    progressBar.setVisibility(View.GONE);
-                                }
-                                else {
-                                    progressBar.setVisibility(View.GONE);
-                                    Toast.makeText(LoginActivity.this, "Login Failed" + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
-                                }
+                else {
+                    reference.child(user).addListenerForSingleValueEvent(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot snapshot) {
+                            if (!snapshot.exists()) {
+                                Toast.makeText(LoginActivity.this, "Username does not exist", Toast.LENGTH_SHORT).show();
                             }
-                        });
-                    }
+                            else {
+                                progressBar.setVisibility(view.VISIBLE);
+                                email = snapshot.child("email").getValue().toString();
+                                //authenticate user
+                                auth.signInWithEmailAndPassword(email, pw).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                                    @Override
+                                    public void onComplete(@NonNull Task<AuthResult> task) {
+                                        if (task.isSuccessful()) {
+                                            Toast.makeText(LoginActivity.this, "Login Successfully", Toast.LENGTH_SHORT).show();
+                                            Intent toMainPage = new Intent(LoginActivity.this, MainPageActivity.class);
+                                            toMainPage.putExtra("username", user);
+                                            startActivity(toMainPage);
+                                            progressBar.setVisibility(View.INVISIBLE);
+                                        }
+                                        else {
+                                            progressBar.setVisibility(View.INVISIBLE);
+                                            Toast.makeText(LoginActivity.this, task.getException().getMessage(), Toast.LENGTH_SHORT).show();
+                                        }
+                                    }
+                                });
+
+                            }
 
 
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError error) {
 
-                    }
-                });
+
+                        }
+
+
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError error) {
+
+                        }
+                    });
+
+
+                }
+
+
+
+
 
 
 
