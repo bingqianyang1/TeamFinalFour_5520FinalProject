@@ -136,6 +136,8 @@ public class AddPostActivity extends AppCompatActivity {
                                             // Handle any errors
                                         }
                                     });
+
+
                                 }
                             })
                             .addOnFailureListener(new OnFailureListener() {

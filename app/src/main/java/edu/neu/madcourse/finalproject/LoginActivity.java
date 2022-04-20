@@ -41,7 +41,7 @@ public class LoginActivity extends AppCompatActivity {
                 String user = loginUsername.getText().toString();
                 String pw = loginPassword.getText().toString();
 
-                reference.child(user).addValueEventListener(new ValueEventListener() {
+                reference.child(user).addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
                         if (!snapshot.exists()) {
