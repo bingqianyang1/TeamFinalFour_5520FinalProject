@@ -300,8 +300,8 @@ public class AddPostActivity extends AppCompatActivity {
 //                user.sent_history.put("History" + user.sent_history.size(),receiver_name + ": " + selected_Sticker_String);
 
                     Map<String, Object> aPost = new HashMap<>();
-                    aPost.put("title", title_tx.getText());
-                    aPost.put("content", content_tx.getText());
+                    aPost.put("title", title_tx.getText().toString());
+                    aPost.put("content", content_tx.getText().toString());
                     aPost.put("time", date_String);
                     aPost.put("location", city);
                     aPost.put("image", upload_image_uri.toString());
