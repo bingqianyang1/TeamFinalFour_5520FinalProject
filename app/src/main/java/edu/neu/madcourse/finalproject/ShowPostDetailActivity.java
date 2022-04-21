@@ -3,7 +3,9 @@ package edu.neu.madcourse.finalproject;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -17,6 +19,7 @@ import com.squareup.picasso.Picasso;
 
 public class ShowPostDetailActivity extends AppCompatActivity {
     private String username;
+    private String bloggerName;
     private String title;
     private String image;
     private String content;
@@ -39,8 +42,9 @@ public class ShowPostDetailActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_show_post_detail);
 
+        username=getIntent().getStringExtra("username");
         image = getIntent().getStringExtra("image");
-        username = getIntent().getStringExtra("username");
+        bloggerName = getIntent().getStringExtra("bloggerName");
         title = getIntent().getStringExtra("title");
         content = getIntent().getStringExtra("content");
         likes = getIntent().getStringExtra("likes");
@@ -56,11 +60,28 @@ public class ShowPostDetailActivity extends AppCompatActivity {
         postDetailTime = findViewById(R.id.postDetailTime);
 
 
+        postDetailUsername.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(bloggerName.equals(username)){
+                    Intent intent = new Intent(ShowPostDetailActivity.this, ShowUserDetailActivity.class);
+                    intent.putExtra("username", username);
+                    startActivity(intent);
+                }else{
+                    Intent intent = new Intent(ShowPostDetailActivity.this, ShowBloggerDetailActivity.class);
+                    intent.putExtra("username", username);
+                    intent.putExtra("bloggerName", bloggerName);
+                    startActivity(intent);
+                }
+
+            }
+        });
+
         reference.child(username).child("posts").child(title).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
 
-                postDetailUsername.setText(username);
+                postDetailUsername.setText(bloggerName);
                 postDetailTitle.setText(title);
                 postDetailContent.setText(content);
                 postDetailLikes.setText(likes);

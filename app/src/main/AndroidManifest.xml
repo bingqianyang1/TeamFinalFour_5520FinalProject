@@ -20,6 +20,7 @@
         <activity
             android:name=".ShowPostDetailActivity"
             android:exported="false" />
+
         <activity
             android:name=".ShowFollowActivity"
             android:exported="false" />

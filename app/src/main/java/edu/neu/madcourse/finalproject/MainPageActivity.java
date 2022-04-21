@@ -135,7 +135,8 @@ public class MainPageActivity extends AppCompatActivity {
                 toPostDetailPage.putExtra("location", postList.get(position).getLocation());
                 toPostDetailPage.putExtra("time", postList.get(position).getTime());
                 toPostDetailPage.putExtra("title", postList.get(position).getTitle());
-                toPostDetailPage.putExtra("username", postList.get(position).getUsername());
+                toPostDetailPage.putExtra("bloggerName", postList.get(position).getUsername());
+                toPostDetailPage.putExtra("username", username);
                 startActivity(toPostDetailPage);
             }
         };

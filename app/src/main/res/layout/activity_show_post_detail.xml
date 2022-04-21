@@ -37,7 +37,9 @@
 
 
         <TextView
-            android:textSize="12sp"
+            android:textSize="18sp"
+            android:textColorHighlight="@color/black"
+            android:textStyle="bold"
             android:id="@+id/postDetailUsername"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

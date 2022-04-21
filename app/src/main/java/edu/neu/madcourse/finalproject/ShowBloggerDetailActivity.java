@@ -23,6 +23,7 @@ import java.util.Map;
 public class ShowBloggerDetailActivity extends AppCompatActivity {
     Button logOutBtn;
     String username;
+    String bloggerName;
     TextView usernameView;
     TextView viewAll;
     ImageView[] image = new ImageView[5];
@@ -32,8 +33,10 @@ public class ShowBloggerDetailActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_show_user_detail);
+        setContentView(R.layout.activity_show_blogger_detail);
+
         username = getIntent().getStringExtra("username");
+        bloggerName = getIntent().getStringExtra("bloggerName");
         logOutBtn=findViewById(R.id.logOutBtn);
         titles[0]=findViewById(R.id.title1);
         titles[1]=findViewById(R.id.title2);
@@ -48,17 +51,17 @@ public class ShowBloggerDetailActivity extends AppCompatActivity {
         image[4]=findViewById(R.id.img05);
 
         usernameView =findViewById(R.id.username);
-        usernameView.setText(username);
+        usernameView.setText(bloggerName);
 
         viewAll=findViewById(R.id.viewAll);
         viewAll.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(ShowBloggerDetailActivity.this, "You have no more blogs", Toast.LENGTH_LONG).show();
+                Toast.makeText(ShowBloggerDetailActivity.this, "They don't have any more blogs", Toast.LENGTH_LONG).show();
             }
         });
 
-        reference.child(username).addValueEventListener(new ValueEventListener() {
+        reference.child(bloggerName).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 User user = snapshot.getValue(User.class);
@@ -81,7 +84,7 @@ public class ShowBloggerDetailActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(ShowBloggerDetailActivity.this,LoginActivity.class);
-                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);		//将DengLuActivity至于栈顶
+                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(intent);
                 DestroyActivitiesUtil destroyActivityUtil = new DestroyActivitiesUtil();
                 destroyActivityUtil.exit();
