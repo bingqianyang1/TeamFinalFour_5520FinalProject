@@ -1,6 +1,7 @@
 package edu.neu.madcourse.finalproject;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,10 +17,11 @@ import java.util.ArrayList;
 public class FollowAdapter extends RecyclerView.Adapter<FollowAdapter.MyViewHolder>{
     ArrayList<String> list;
     Context context;
-
-    public FollowAdapter(Context context, ArrayList<String>list){
+    String username;
+    public FollowAdapter(Context context, ArrayList<String>list,String username){
         this.list=list;
         this.context=context;
+        this.username = username;
     }
 
     @NonNull
@@ -33,6 +35,15 @@ public class FollowAdapter extends RecyclerView.Adapter<FollowAdapter.MyViewHold
     public void onBindViewHolder(@NonNull FollowAdapter.MyViewHolder holder, int position) {
         String model = list.get(position);
         holder.followText.setText(model);
+        holder.followItem.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(context, ShowBloggerDetailActivity.class);
+                intent.putExtra("username", username);
+                intent.putExtra("bloggerName", model);
+                context.startActivity(intent);
+            }
+        });
     }
 
     @Override

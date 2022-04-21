@@ -28,18 +28,17 @@ public class ShowFollowActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_show_follow);
 
-        System.out.println("hereherehereherehereherehereherehereherehereherehere");
         DatabaseReference reference = FirebaseDatabase.getInstance().getReference().child("Users");
         recyclerView = findViewById(R.id.followReView);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
-
+        String username = getIntent().getStringExtra("username");
         list=new ArrayList<>();
-        adapter = new FollowAdapter(this,list);
+        adapter = new FollowAdapter(this,list,username);
         recyclerView.setAdapter(adapter);
 
-        String username = getIntent().getStringExtra("username");
-        System.out.println(username+"!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+
+
         reference.child(username).child("following").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
