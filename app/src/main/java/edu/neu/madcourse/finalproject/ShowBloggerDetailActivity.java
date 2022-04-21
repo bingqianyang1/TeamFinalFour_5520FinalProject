@@ -18,14 +18,16 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.util.HashMap;
 import java.util.Map;
 
 public class ShowBloggerDetailActivity extends AppCompatActivity {
-    Button logOutBtn;
+    Button followBtn;
     String username;
     String bloggerName;
     TextView usernameView;
     TextView viewAll;
+    Boolean following=false;
     ImageView[] image = new ImageView[5];
     TextView[] titles = new TextView[5];
     private DatabaseReference reference = FirebaseDatabase.getInstance().getReference().child("Users");
@@ -37,7 +39,7 @@ public class ShowBloggerDetailActivity extends AppCompatActivity {
 
         username = getIntent().getStringExtra("username");
         bloggerName = getIntent().getStringExtra("bloggerName");
-        logOutBtn=findViewById(R.id.logOutBtn);
+        followBtn=findViewById(R.id.followBtn);
         titles[0]=findViewById(R.id.title1);
         titles[1]=findViewById(R.id.title2);
         titles[2]=findViewById(R.id.title3);
@@ -52,6 +54,8 @@ public class ShowBloggerDetailActivity extends AppCompatActivity {
 
         usernameView =findViewById(R.id.username);
         usernameView.setText(bloggerName);
+
+
 
         viewAll=findViewById(R.id.viewAll);
         viewAll.setOnClickListener(new View.OnClickListener() {
@@ -71,6 +75,11 @@ public class ShowBloggerDetailActivity extends AppCompatActivity {
                     Map<String,String> blog = (Map)user.getPosts().get(key);
                     String img = blog.get("image");
                     Glide.with(ShowBloggerDetailActivity.this).load(img).into(image[count]);
+
+                    if(user.getFollowing()!=null && user.getFollowing().values().contains(username)){
+                        followBtn.setText("UNFOLLOW");
+                        following = true;
+                    }
                     count++;
                 }
             }
@@ -80,14 +89,34 @@ public class ShowBloggerDetailActivity extends AppCompatActivity {
 
             }
         });
-        logOutBtn.setOnClickListener(new View.OnClickListener() {
+        followBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(ShowBloggerDetailActivity.this,LoginActivity.class);
-                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                startActivity(intent);
-                DestroyActivitiesUtil destroyActivityUtil = new DestroyActivitiesUtil();
-                destroyActivityUtil.exit();
+                if(!following){
+
+                    reference.child(username).child("following").child(bloggerName).setValue(bloggerName);
+
+                    reference.child(username).child("following").child("paul").setValue("paul");
+                    followBtn.setText("UNFOLLOW");
+                    following = true;
+                    /**
+                    reference.child(username).child("following").addListenerForSingleValueEvent(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot snapshot) {
+
+                        }
+
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError error) {
+
+                        }
+                    });
+                     **/
+                } else{
+                    reference.child(username).child("following").child(bloggerName).removeValue();
+                    followBtn.setText("FOLLOW");
+                    following = false;
+                }
             }
         });
     }

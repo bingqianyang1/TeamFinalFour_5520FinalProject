@@ -5,6 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -41,9 +42,11 @@ public class FollowAdapter extends RecyclerView.Adapter<FollowAdapter.MyViewHold
 
     public static class MyViewHolder extends RecyclerView.ViewHolder{
         TextView followText;
+        LinearLayout followItem;
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);
             followText = itemView.findViewById(R.id.followText);
+            followItem = itemView.findViewById(R.id.followItem);
         }
     }
 }

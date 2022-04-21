@@ -8,15 +8,16 @@ public class User {
     public String username;
     public String email;
     public String password;
-    public Map<String, String> followers;
+    public String followers;
+    public Map<String, String>  following;
     public Map<String, Object> posts;
 
     public User(){};
 
     public User(String username, String email, String password){
+        this.following=new HashMap<>();
         this.username = username;
         this.email = email;
-        this.followers = new HashMap<>();
         this.posts = new HashMap<>();
         this.password = password;
     }
@@ -45,12 +46,20 @@ public class User {
         this.password = password;
     }
 
-    public Map<String, String> getFollowers() {
+    public String getFollowers() {
         return followers;
     }
 
-    public void setFollowers(Map<String, String> followers) {
+    public void setFollowers(String followers) {
         this.followers = followers;
+    }
+
+    public Map<String, String> getFollowing() {
+        return following;
+    }
+
+    public void setFollowing(Map<String, String> following) {
+        this.following = following;
     }
 
     public Map<String, Object> getPosts() {
