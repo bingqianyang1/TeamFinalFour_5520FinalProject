@@ -3,6 +3,7 @@ package edu.neu.madcourse.finalproject;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -80,7 +81,11 @@ public class ShowUserDetailActivity extends AppCompatActivity {
         logOutBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                Intent intent = new Intent(ShowUserDetailActivity.this,LoginActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);		//将DengLuActivity至于栈顶
+                startActivity(intent);
+                DestroyActivitiesUtil destroyActivityUtil = new DestroyActivitiesUtil();
+                destroyActivityUtil.exit();
             }
         });
     }
