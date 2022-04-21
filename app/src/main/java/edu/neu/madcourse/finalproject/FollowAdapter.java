@@ -13,10 +13,10 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.util.ArrayList;
 
 public class FollowAdapter extends RecyclerView.Adapter<FollowAdapter.MyViewHolder>{
-    ArrayList<FollowModel> list;
+    ArrayList<String> list;
     Context context;
 
-    public FollowAdapter(Context context, ArrayList<FollowModel>list){
+    public FollowAdapter(Context context, ArrayList<String>list){
         this.list=list;
         this.context=context;
     }
@@ -30,8 +30,8 @@ public class FollowAdapter extends RecyclerView.Adapter<FollowAdapter.MyViewHold
 
     @Override
     public void onBindViewHolder(@NonNull FollowAdapter.MyViewHolder holder, int position) {
-        FollowModel model = list.get(position);
-        holder.followText.setText(model.getName());
+        String model = list.get(position);
+        holder.followText.setText(model);
     }
 
     @Override
