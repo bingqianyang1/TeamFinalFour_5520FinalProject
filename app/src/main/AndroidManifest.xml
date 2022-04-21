@@ -18,6 +18,12 @@
             android:name=".ShowPostDetailActivity"
             android:exported="false" />
         <activity
+            android:name=".ShowFollowActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ShowUserDetailActivity"
+            android:exported="false" />
+        <activity
             android:name=".RegisterActivity"
             android:exported="false" />
         <activity
