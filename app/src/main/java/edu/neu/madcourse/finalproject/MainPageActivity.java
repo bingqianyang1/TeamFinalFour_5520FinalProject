@@ -3,6 +3,7 @@ package edu.neu.madcourse.finalproject;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SearchView;
+import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -50,8 +51,7 @@ public class MainPageActivity extends AppCompatActivity {
 
         recyclerView = findViewById(R.id.postList);
         database = FirebaseDatabase.getInstance().getReference("Users");
-        recyclerView.setHasFixedSize(true);
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+
 
         addButton = findViewById(R.id.add);
         homeButton = findViewById(R.id.home);
@@ -66,6 +66,9 @@ public class MainPageActivity extends AppCompatActivity {
 
         setPostItemOnClickListener();
         postAdapter = new PostAdapter(this, postList, newPostList, listener);
+
+        GridLayoutManager gridLayoutManager = new GridLayoutManager(this, 2, GridLayoutManager.VERTICAL, false);
+        recyclerView.setLayoutManager(gridLayoutManager);
         recyclerView.setAdapter(postAdapter);
 
         database.addValueEventListener(new ValueEventListener() {

@@ -1,8 +1,6 @@
 package edu.neu.madcourse.finalproject;
 
 import android.content.Context;
-import android.content.Intent;
-import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,7 +8,6 @@ import android.widget.Filter;
 import android.widget.Filterable;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -21,10 +18,8 @@ import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Comparator;
 import java.util.List;
 import java.util.Locale;
-import java.util.Map;
 
 public class PostAdapter extends RecyclerView.Adapter<PostAdapter.MyViewHolder>  implements Filterable {
 
@@ -71,9 +66,6 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.MyViewHolder> 
             }
         });
 
-        // Handle Situation when multiple lines here.
-        String oneLineContent = trimToOneLine(post.getContent());
-        holder.content.setText(oneLineContent.length() <= 20? oneLineContent: oneLineContent.substring(0,20) + "...");
     }
 
 
@@ -85,13 +77,13 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.MyViewHolder> 
 
 
     public class MyViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
-        TextView title, likes, content;
+        TextView title, likes;
         ImageView heart, image;
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);
             title = itemView.findViewById(R.id.title);
             likes = itemView.findViewById(R.id.likes);
-            content = itemView.findViewById(R.id.content);
+        //    content = itemView.findViewById(R.id.content);
             heart = itemView.findViewById(R.id.heart);
             image = itemView.findViewById(R.id.image);
             itemView.setOnClickListener(this);
@@ -139,16 +131,6 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.MyViewHolder> 
             notifyDataSetChanged();
         }
     };
-
-
-    /**
-     * Trim content to one line
-     * @param content - the content
-     * @return
-     */
-    private String trimToOneLine(String content) {
-        return content.replace("\n", " ");
-    }
 
 
     public interface RecyclerViewClickListener {
