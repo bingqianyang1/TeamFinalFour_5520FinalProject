@@ -53,7 +53,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.MyViewHolder> 
         String likes = post.getLikes();
         holder.title.setText(title.length() <= 20? title: title.substring(0,20) + "...");
         holder.likes.setText(likes);
-
+        holder.username.setText(username);
         Glide.with(context).load(post.getImage()).into(holder.image);
 
 
@@ -77,13 +77,13 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.MyViewHolder> 
 
 
     public class MyViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
-        TextView title, likes;
+        TextView title, likes, username;
         ImageView heart, image;
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);
             title = itemView.findViewById(R.id.title);
             likes = itemView.findViewById(R.id.likes);
-        //    content = itemView.findViewById(R.id.content);
+            username = itemView.findViewById(R.id.post_username);
             heart = itemView.findViewById(R.id.heart);
             image = itemView.findViewById(R.id.image);
             itemView.setOnClickListener(this);
