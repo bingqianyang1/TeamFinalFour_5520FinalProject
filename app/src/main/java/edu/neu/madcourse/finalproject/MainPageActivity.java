@@ -58,7 +58,7 @@ public class MainPageActivity extends AppCompatActivity {
         followButton = findViewById(R.id.follower);
 
         username = getIntent().getStringExtra("username");
-        MainPageActivity.this.setTitle(username + ", for you");
+        MainPageActivity.this.setTitle(username);
 
         postList = new ArrayList<>();
         userList = new ArrayList<>();
