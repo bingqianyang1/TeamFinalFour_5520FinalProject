@@ -55,6 +55,7 @@
                 android:layout_height="wrap_content"
                 android:text="username"
                 android:textStyle="italic"
+                android:layout_marginTop="1sp"
                 android:textColor="@color/black"
                 android:textSize="10sp"
                 android:layout_toRightOf="@+id/post_user_image"

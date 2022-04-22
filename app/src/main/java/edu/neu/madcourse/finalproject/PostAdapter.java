@@ -1,6 +1,7 @@
 package edu.neu.madcourse.finalproject;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -56,12 +57,22 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.MyViewHolder> 
         holder.username.setText(username);
         Glide.with(context).load(post.getImage()).into(holder.image);
 
+//         Click the username, got some bugs here
+//        holder.username.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                Intent intent = new Intent(context, ShowUserDetailActivity.class);
+//                intent.putExtra("username", username);
+//                context.startActivity(intent);
+//            }
+//        });
+
 
         // Click the Likes
         holder.heart.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                DatabaseReference likesThisPost = database.child(username).child("posts").child(title).child("likes");
+                DatabaseReference likesThisPost = database.child(holder.username.getText().toString()).child("posts").child(title).child("likes");
                 likesThisPost.setValue(String.valueOf(Integer.valueOf(likes)+1));
             }
         });
@@ -86,7 +97,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.MyViewHolder> 
             username = itemView.findViewById(R.id.post_username);
             heart = itemView.findViewById(R.id.heart);
             image = itemView.findViewById(R.id.image);
-            itemView.setOnClickListener(this);
+            image.setOnClickListener(this);
         }
 
         @Override
