@@ -26,6 +26,8 @@ public class ShowUserDetailActivity extends AppCompatActivity {
     String username;
     TextView usernameView;
     TextView viewAll;
+    TextView following;
+    TextView follower;
     ImageView[] image = new ImageView[5];
     TextView[] titles = new TextView[5];
     private DatabaseReference reference = FirebaseDatabase.getInstance().getReference().child("Users");
@@ -51,6 +53,9 @@ public class ShowUserDetailActivity extends AppCompatActivity {
         usernameView =findViewById(R.id.username);
         usernameView.setText(username);
 
+        following=findViewById(R.id.followingNo);
+        follower=findViewById(R.id.followerNo);
+
         viewAll=findViewById(R.id.viewAll);
         viewAll.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -64,6 +69,17 @@ public class ShowUserDetailActivity extends AppCompatActivity {
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 User user = snapshot.getValue(User.class);
                 int count = 0;
+                if(user.getFollowing()==null){
+                    following.setText("0");
+                }else{
+                    following.setText(Integer.toString(user.getFollowing().keySet().size()));
+                }
+                if(user.getFollowers()==null){
+                    follower.setText("0");
+                }else{
+                    follower.setText(user.getFollowers());
+                }
+
                 if(user.getPosts()==null) return;
                 for(String key: user.getPosts().keySet()) {
                     titles[count].setText(key);

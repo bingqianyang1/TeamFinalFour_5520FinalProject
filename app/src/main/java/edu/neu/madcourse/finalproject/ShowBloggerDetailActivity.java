@@ -17,6 +17,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.squareup.picasso.Picasso;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -27,11 +28,13 @@ public class ShowBloggerDetailActivity extends AppCompatActivity {
     String bloggerName;
     TextView usernameView;
     TextView viewAll;
+    TextView followingView;
+    TextView followerView;
+    int followerNo = 0;
     Boolean following=false;
     Boolean exist=true;
     ImageView[] image = new ImageView[5];
     TextView[] titles = new TextView[5];
-    TextView followerNo;
     private DatabaseReference reference = FirebaseDatabase.getInstance().getReference().child("Users");
 
     @Override
@@ -56,8 +59,10 @@ public class ShowBloggerDetailActivity extends AppCompatActivity {
 
         usernameView =findViewById(R.id.username);
         usernameView.setText(bloggerName);
-        followerNo=findViewById(R.id.followerNo);
 
+
+        followingView=findViewById(R.id.followingNo);
+        followerView=findViewById(R.id.followerNo);
 
         viewAll=findViewById(R.id.viewAll);
         viewAll.setOnClickListener(new View.OnClickListener() {
@@ -77,17 +82,34 @@ public class ShowBloggerDetailActivity extends AppCompatActivity {
                     exist=false;
                     return;
                 }
+
+                if(user.getFollowing()==null){
+                    followingView.setText("0");
+                }else{
+                    followingView.setText(Integer.toString(user.getFollowing().keySet().size()));
+                }
+                if(user.getFollowers()==null){
+                    followerView.setText("0");
+
+                }else{
+
+                    followerView.setText(user.getFollowers());
+                    followerNo = Integer.parseInt(user.getFollowers());
+                }
+
                 int count = 0;
                 for(String key: user.getPosts().keySet()) {
                     titles[count].setText(key);
                     Map<String,String> blog = (Map)user.getPosts().get(key);
                     String img = blog.get("image");
-                    Glide.with(ShowBloggerDetailActivity.this).load(img).into(image[count]);
-
+                    //Glide.with(ShowBloggerDetailActivity.this).load(img).into(image[count]);
+                    Picasso.with(ShowBloggerDetailActivity.this).load(img).into(image[count]);
+                    /**
                     if(user.getFollowing()!=null && user.getFollowing().values().contains(username)){
                         followBtn.setText("UNFOLLOW");
                         following = true;
                     }
+                     */
                     count++;
                 }
             }
@@ -97,38 +119,57 @@ public class ShowBloggerDetailActivity extends AppCompatActivity {
 
             }
         });
+
+
+        reference.child(username).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                User user = snapshot.getValue(User.class);
+                if(user.getFollowing()!=null && user.getFollowing().values().contains(bloggerName)){
+                        followBtn.setText("UNFOLLOW");
+                        following = true;
+                }
+            }
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+            }
+        });
+
+
         followBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 if(!exist)return;
                 if(!following){
-
                     reference.child(username).child("following").child(bloggerName).setValue(bloggerName);
-
-                    reference.child(username).child("following").child("paul").setValue("paul");
-
                     //Integer.parseInt(followerNo.getText().toString())+1;
                     followBtn.setText("UNFOLLOW");
                     following = true;
+                    followerNo++;
+                    System.out.println(followerNo);
                     /**
                     reference.child(username).child("following").addListenerForSingleValueEvent(new ValueEventListener() {
                         @Override
                         public void onDataChange(@NonNull DataSnapshot snapshot) {
-
                         }
-
                         @Override
                         public void onCancelled(@NonNull DatabaseError error) {
 
                         }
                     });
                      **/
+                   //reference.child(bloggerName).child("followers").setValue(Integer.toString(followerNo));
                 } else{
                     reference.child(username).child("following").child(bloggerName).removeValue();
                     followBtn.setText("FOLLOW");
                     following = false;
+                    followerNo=followerNo-1;
+                    //reference.child(bloggerName).child("followers").setValue(Integer.toString(followerNo));
                 }
+                followerView.setText(Integer.toString(followerNo));
+                reference.child(bloggerName).child("followers").setValue(Integer.toString(followerNo));
             }
         });
     }
+
 }
