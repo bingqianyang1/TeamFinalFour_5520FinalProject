@@ -64,6 +64,7 @@ public class ShowUserDetailActivity extends AppCompatActivity {
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 User user = snapshot.getValue(User.class);
                 int count = 0;
+                if(user.getPosts()==null) return;
                 for(String key: user.getPosts().keySet()) {
                     titles[count].setText(key);
                     Map<String,String>blog = (Map)user.getPosts().get(key);
@@ -82,7 +83,7 @@ public class ShowUserDetailActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(ShowUserDetailActivity.this,LoginActivity.class);
-                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);		//将DengLuActivity至于栈顶
+                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(intent);
                 DestroyActivitiesUtil destroyActivityUtil = new DestroyActivitiesUtil();
                 destroyActivityUtil.exit();

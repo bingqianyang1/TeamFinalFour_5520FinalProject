@@ -28,8 +28,10 @@ public class ShowBloggerDetailActivity extends AppCompatActivity {
     TextView usernameView;
     TextView viewAll;
     Boolean following=false;
+    Boolean exist=true;
     ImageView[] image = new ImageView[5];
     TextView[] titles = new TextView[5];
+    TextView followerNo;
     private DatabaseReference reference = FirebaseDatabase.getInstance().getReference().child("Users");
 
     @Override
@@ -54,7 +56,7 @@ public class ShowBloggerDetailActivity extends AppCompatActivity {
 
         usernameView =findViewById(R.id.username);
         usernameView.setText(bloggerName);
-
+        followerNo=findViewById(R.id.followerNo);
 
 
         viewAll=findViewById(R.id.viewAll);
@@ -68,7 +70,13 @@ public class ShowBloggerDetailActivity extends AppCompatActivity {
         reference.child(bloggerName).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
+
                 User user = snapshot.getValue(User.class);
+                if(user==null){
+                    Toast.makeText(ShowBloggerDetailActivity.this, "This user does not exists", Toast.LENGTH_LONG).show();
+                    exist=false;
+                    return;
+                }
                 int count = 0;
                 for(String key: user.getPosts().keySet()) {
                     titles[count].setText(key);
@@ -92,11 +100,14 @@ public class ShowBloggerDetailActivity extends AppCompatActivity {
         followBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                if(!exist)return;
                 if(!following){
 
                     reference.child(username).child("following").child(bloggerName).setValue(bloggerName);
 
                     reference.child(username).child("following").child("paul").setValue("paul");
+
+                    //Integer.parseInt(followerNo.getText().toString())+1;
                     followBtn.setText("UNFOLLOW");
                     following = true;
                     /**
