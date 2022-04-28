@@ -297,6 +297,7 @@ public class AddPostActivity extends AppCompatActivity {
                     Map<String, Object> updated = new HashMap<>();
                     updated.put("posts", posts);
                     database.child("Users").child(user_name).updateChildren(updated);
+                    AddPostActivity.this.finish();
                 }else {
 
 //                user.sent_history.put("History" + user.sent_history.size(),receiver_name + ": " + selected_Sticker_String);
@@ -312,6 +313,7 @@ public class AddPostActivity extends AppCompatActivity {
                     Map<String, Object> updated = new HashMap<>();
                     updated.put(title_tx.getText().toString(), aPost);
                     database.child("Users").child(user_name).child("posts").updateChildren(updated);
+                    AddPostActivity.this.finish();
                 }
 //                }
             }
@@ -321,6 +323,8 @@ public class AddPostActivity extends AppCompatActivity {
 
             }
         });
+
+
     }
 
 
