@@ -14,8 +14,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/register_page"
-        android:textSize="20sp"
-        android:layout_marginBottom="20dp" />
+        android:textSize="20sp" />
 
     <EditText
         android:id="@+id/registerUsername"
@@ -31,7 +30,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/registerUsername"
-        android:layout_marginBottom="20dp"
         android:hint="@string/email"
         android:minHeight="48dp" />
 
@@ -40,7 +38,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/registerEmail"
-        android:layout_marginBottom="20dp"
         android:hint="Password"
         android:minHeight="48dp" />
 
@@ -49,8 +46,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/registerPassword"
-        android:text="@string/register"
-        android:layout_marginBottom="20dp" />
+        android:text="@string/register" />
 
     <TextView
         android:id="@+id/textLogin"
@@ -58,7 +54,6 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/registerButton"
         android:text="@string/existing_user_login"
-        android:layout_marginBottom="20dp"
         android:textAlignment="center" />
 
     <ProgressBar

@@ -60,6 +60,7 @@ public class ShowPostDetailActivity extends AppCompatActivity {
         postDetailTime = findViewById(R.id.postDetailTime);
 
 
+
         postDetailUsername.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
