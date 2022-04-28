@@ -45,8 +45,8 @@
                 android:layout_width="15sp"
                 android:layout_height="15sp"
                 android:layout_marginLeft="4sp"
-                android:src="@drawable/circle_profile"
-                android:scaleType="fitXY" />
+                android:scaleType="fitXY"
+                android:src="@drawable/circle_profile" />
 
 
             <TextView

@@ -15,8 +15,8 @@
         <ImageView
             android:id="@+id/postDetailImg"
             android:layout_width="0dp"
-            android:layout_height="250dp"
-            android:scaleType="centerCrop"
+            android:layout_height="350dp"
+            android:scaleType="fitXY"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"

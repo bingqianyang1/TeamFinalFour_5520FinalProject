@@ -5,12 +5,10 @@
       <map>
         <entry key="../../../../layout/custom_preview.xml" value="0.2046875" />
         <entry key="..\:/DOC/NEU/courses/cs5520/FINAL/TeamFinalFour_5520FinalProject/app/src/main/res/layout/activity_main_page.xml" value="0.21875" />
-        <entry key="..\:/DOC/NEU/courses/cs5520/FINAL/TeamFinalFour_5520FinalProject/app/src/main/res/layout/activity_show_all_post.xml" value="0.18854166666666666" />
-        <entry key="..\:/DOC/NEU/courses/cs5520/FINAL/TeamFinalFour_5520FinalProject/app/src/main/res/layout/activity_show_blogger_detail.xml" value="0.2" />
+        <entry key="..\:/DOC/NEU/courses/cs5520/FINAL/TeamFinalFour_5520FinalProject/app/src/main/res/layout/activity_show_blogger_detail.xml" value="0.1" />
         <entry key="..\:/DOC/NEU/courses/cs5520/FINAL/TeamFinalFour_5520FinalProject/app/src/main/res/layout/activity_show_follow.xml" value="0.1" />
         <entry key="..\:/DOC/NEU/courses/cs5520/FINAL/TeamFinalFour_5520FinalProject/app/src/main/res/layout/activity_show_post_detail.xml" value="0.2115036231884058" />
         <entry key="..\:/DOC/NEU/courses/cs5520/FINAL/TeamFinalFour_5520FinalProject/app/src/main/res/layout/activity_show_user_detail.xml" value="0.21875" />
-        <entry key="..\:/DOC/NEU/courses/cs5520/FINAL/TeamFinalFour_5520FinalProject/app/src/main/res/layout/all_post_itme.xml" value="0.18854166666666666" />
         <entry key="..\:/DOC/NEU/courses/cs5520/FINAL/TeamFinalFour_5520FinalProject/app/src/main/res/layout/follow_item.xml" value="0.1" />
         <entry key="..\:/DOC/NEU/courses/cs5520/FINAL/TeamFinalFour_5520FinalProject/app/src/main/res/layout/item.xml" value="0.21875" />
         <entry key="app/src/main/res/layout/activity_add_post.xml" value="0.21061096191406253" />
@@ -18,9 +16,11 @@
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.14517110188802082" />
         <entry key="app/src/main/res/layout/activity_main_page.xml" value="0.225" />
         <entry key="app/src/main/res/layout/activity_register.xml" value="0.13880445795339413" />
+        <entry key="app/src/main/res/layout/activity_show_all_post.xml" value="0.15172101449275363" />
         <entry key="app/src/main/res/layout/activity_show_follow.xml" value="0.2105978260869565" />
         <entry key="app/src/main/res/layout/activity_show_post_detail.xml" value="0.2105978260869565" />
         <entry key="app/src/main/res/layout/activity_show_user_detail.xml" value="0.19067028985507245" />
+        <entry key="app/src/main/res/layout/all_post_itme.xml" value="0.15172101449275363" />
         <entry key="app/src/main/res/layout/follow_item.xml" value="0.12083333333333333" />
         <entry key="app/src/main/res/layout/grid_layout.xml" value="0.22708333333333333" />
         <entry key="app/src/main/res/layout/item.xml" value="0.335" />
