@@ -78,7 +78,7 @@
         app:layout_constraintTop_toBottomOf="@+id/followNoLayout"
         app:layout_constraintVertical_bias="0.222">
 
-        <LinearLayout
+        <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
@@ -86,6 +86,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="20dp"
+                android:layout_alignParentStart="true"
                 android:text="Their blogs"
                 android:textSize="24dp"
                 android:textStyle="bold" />
@@ -94,11 +95,11 @@
                 android:id="@+id/viewAll"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="100dp"
+                android:layout_alignParentEnd="true"
                 android:text="View all blogs"
                 android:textSize="18dp"
                 android:textStyle="bold" />
-        </LinearLayout>
+        </RelativeLayout>
 
 
         <LinearLayout
