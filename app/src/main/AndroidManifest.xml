@@ -15,12 +15,14 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.FinalProject">
         <activity
+            android:name=".ShowAllPostActivity"
+            android:exported="false" />
+        <activity
             android:name=".ShowBloggerDetailActivity"
             android:exported="false" />
         <activity
             android:name=".ShowPostDetailActivity"
             android:exported="false" />
-
         <activity
             android:name=".ShowFollowActivity"
             android:exported="false" />

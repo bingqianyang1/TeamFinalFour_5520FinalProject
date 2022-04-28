@@ -9,6 +9,8 @@ public class Post {
     private String likes;
     private String username;
 
+    public Post(){}
+    
     public Post(String image, String title, String content, String location, String time, String likes, String username) {
         this.image = image;
         this.title = title;

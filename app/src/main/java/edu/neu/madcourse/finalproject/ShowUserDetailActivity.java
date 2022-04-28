@@ -60,7 +60,10 @@ public class ShowUserDetailActivity extends AppCompatActivity {
         viewAll.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(ShowUserDetailActivity.this, "You have no more blogs", Toast.LENGTH_LONG).show();
+                Intent intent = new Intent(ShowUserDetailActivity.this, ShowAllPostActivity.class);
+                intent.putExtra("username", username);
+                startActivity(intent);
+                //Toast.makeText(ShowUserDetailActivity.this, "You have no more blogs", Toast.LENGTH_LONG).show();
             }
         });
 
@@ -85,7 +88,8 @@ public class ShowUserDetailActivity extends AppCompatActivity {
                     titles[count].setText(key);
                     Map<String,String>blog = (Map)user.getPosts().get(key);
                     String img = blog.get("image");
-                    Glide.with(ShowUserDetailActivity.this).load(img).into(image[count]);
+                    //Glide.with(ShowUserDetailActivity.this).load(img).into(image[count]);
+                    Picasso.with(ShowUserDetailActivity.this).load(img).into(image[count]);
                     count++;
                 }
             }

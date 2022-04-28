@@ -68,7 +68,10 @@ public class ShowBloggerDetailActivity extends AppCompatActivity {
         viewAll.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(ShowBloggerDetailActivity.this, "They don't have any more blogs", Toast.LENGTH_LONG).show();
+                Intent intent = new Intent(ShowBloggerDetailActivity.this, ShowAllPostActivity.class);
+                intent.putExtra("username", bloggerName);
+                startActivity(intent);
+                //Toast.makeText(ShowBloggerDetailActivity.this, "They don't have any more blogs", Toast.LENGTH_LONG).show();
             }
         });
 
