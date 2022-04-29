@@ -19,20 +19,21 @@ import java.util.HashMap;
 public class ShowFollowActivity extends AppCompatActivity {
 
     private RecyclerView recyclerView;
-
+    DatabaseReference reference;
     private FollowAdapter adapter;
     private ArrayList<String> list;
+    String username;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_show_follow);
 
-        DatabaseReference reference = FirebaseDatabase.getInstance().getReference().child("Users");
+        reference = FirebaseDatabase.getInstance().getReference().child("Users");
         recyclerView = findViewById(R.id.followReView);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        String username = getIntent().getStringExtra("username");
+        username = getIntent().getStringExtra("username");
         list=new ArrayList<>();
         adapter = new FollowAdapter(this,list,username);
         recyclerView.setAdapter(adapter);
@@ -43,16 +44,10 @@ public class ShowFollowActivity extends AppCompatActivity {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
-                    //FollowModel model = dataSnapshot.getValue(FollowModel.class);
-                    /**
-                    System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
-                    System.out.println(dataSnapshot.getValue());
-                    FollowModel following = dataSnapshot.getValue(FollowModel.class);
-                    System.out.println("????????????????????????????????????");
-                    for(String name: following.getMap().values()){
-                        list.add(name);
-                    }**/
-                    list.add((String)dataSnapshot.getValue());
+                    String v = (String)dataSnapshot.getValue();
+                    if(!list.contains(v)){
+                        list.add(v);
+                    }
                 }
 
                 adapter.notifyDataSetChanged();
@@ -62,5 +57,38 @@ public class ShowFollowActivity extends AppCompatActivity {
             public void onCancelled(@NonNull DatabaseError error) {
             }
         });
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        list = new ArrayList<>();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        adapter = new FollowAdapter(this,list,username);
+        recyclerView.setAdapter(adapter);
+
+        reference.child(username).child("following").addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
+                    String v = (String)dataSnapshot.getValue();
+                    if(!list.contains(v)){
+                        list.add(v);
+                    }
+                }
+
+                adapter.notifyDataSetChanged();
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+            }
+        });
+
     }
 }
